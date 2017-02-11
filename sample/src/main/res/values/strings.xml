@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Outlast Sample</string>
+    <string name="title">Bad Words (Outlast Sample)</string>
+
+    <string name="app_description">
+        This is sample app of using the Outlast library
+        in conjunction with the RxPM (RxPresentationModel) pattern.
+    </string>
+    <string name="input_label">Don\'t be shy:</string>
+    <string name="output_label">Censored:</string>
+    <string name="children_button_show">Show swearing boxes</string>
+    <string name="children_button_hide">OK, hide them</string>
+    <string name="children_label">
+        Swearing boxes shows that two same Fragments will have different Presentation Model
+        instances. \nAnd that freely use Child Fragments.
+    </string>
+
+</resources>
