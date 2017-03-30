@@ -116,7 +116,7 @@ Sample is based on the RxPM pattern that uses the Outlast to let PresentationMod
 In the app you enter some bad words into input and it tries to censor them. Also there is two child fragments to show that they can be used and that the same Views (child Fragments in this case) has different outlasting PresentationModels.
 
 ## Thanks
-+ Thank to Dmitry Gorbunov (@dmdevgo) for help with some decisions
++ Thank to Dmitriy Gorbunov (@dmdevgo) for help with some decisions
 
 ## License
 
