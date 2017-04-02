@@ -15,7 +15,7 @@ ext {
     bintrayName = 'outlast'
     publishedGroupId = 'me.jeevuz.outlast'
     artifact = 'outlast'
-    libraryVersion = '1.0'
+    libraryVersion = '1.1'
     gitUrl = 'https://github.com/jeevuz/Outlast'
     allLicenses = ['MIT']
 }

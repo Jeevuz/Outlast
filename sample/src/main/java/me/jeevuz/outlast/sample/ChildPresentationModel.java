@@ -2,9 +2,9 @@ package me.jeevuz.outlast.sample;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 import static me.jeevuz.outlast.sample.TheApplication.BAD_WORDS;
@@ -20,13 +20,13 @@ public final class ChildPresentationModel implements PresentationModel {
         this.intervalSpeedSeconds = intervalSpeedSeconds;
     }
 
-    private CompositeSubscription subscriptions = new CompositeSubscription();
+    private CompositeDisposable composite = new CompositeDisposable();
 
     // View states
     private BehaviorSubject<String> intervalText = BehaviorSubject.create();
 
     public Observable<String> intervalText() {
-        return intervalText.asObservable();
+        return intervalText.hide();
     }
 
     @Override
@@ -34,7 +34,7 @@ public final class ChildPresentationModel implements PresentationModel {
         Timber.d("Created child %s" + hashCode());
 
         // Interval text
-        subscriptions.add(
+        composite.add(
                 Observable.interval(intervalSpeedSeconds, TimeUnit.SECONDS)
                         .doOnNext(s -> Timber.d("Interval value: %s", s))
                         .map(intervalValue -> {
@@ -54,6 +54,6 @@ public final class ChildPresentationModel implements PresentationModel {
     public void onDestroy() {
         Timber.d("Destroyed child %s" + hashCode());
 
-        subscriptions.clear();
+        composite.clear();
     }
 }
