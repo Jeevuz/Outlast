@@ -14,14 +14,12 @@ That's why *persistent Presenter (ViewModel, PresentationModel)* proved itself a
 Add the following lines to your build.gradle:
 ```groovy
 repositories {
-    maven {
-        url 'https://dl.bintray.com/jeevuz/maven'
-    }
+    maven { url 'https://dl.bintray.com/jeevuz/maven' }
 }
 
 dependencies {
     // Outlast
-    compile 'me.jeevuz.outlast:outlast:1.0'
+    compile 'me.jeevuz.outlast:outlast:1.1'
 }
 ```
 
