@@ -20,15 +20,32 @@ import java.util.UUID;
  */
 public abstract class Outlast<T extends Outlasting> {
 
-    private static final String SAVED_OUTLASTING_TAG = "outlasting_tag";
+    private static final String SAVED_OUTLASTING_TAG = "outlasting_tag_";
 
     private String outlastingTag;
     private Outlasting.Creator<T> creator;
+    private final String savedOutlastingTagKey;
 
     private boolean wasInstanceStateSaved;
 
+    /**
+     * Constructs Outlast.
+     * @param creator to use if {@link Outlasting} isn't created yet.
+     * @param savedInstanceState to restore saved tag of the Outlasting.
+     */
     public Outlast(@NonNull Outlasting.Creator<T> creator, @Nullable Bundle savedInstanceState) {
+        this(creator, savedInstanceState, 0);
+    }
+
+    /**
+     * Constructs Outlast with id. Useful when one class has multiple Outlasts inside it.
+     * @param creator to use if {@link Outlasting} isn't created yet.
+     * @param savedInstanceState to restore saved tag of the Outlasting.
+     * @param outlastId id for this Outlast. Needed for distinguish saved outlasting tags.
+     */
+    public Outlast(@NonNull Outlasting.Creator<T> creator, @Nullable Bundle savedInstanceState, int outlastId) {
         this.creator = creator;
+        savedOutlastingTagKey = SAVED_OUTLASTING_TAG + outlastId;
         outlastingTag = obtainOutlastingTag(savedInstanceState);
     }
 
@@ -36,7 +53,7 @@ public abstract class Outlast<T extends Outlasting> {
         if (savedInstanceState == null) {
             return createOutlastingTag();
         } else {
-            return savedInstanceState.getString(SAVED_OUTLASTING_TAG);
+            return savedInstanceState.getString(savedOutlastingTagKey);
         }
     }
 
@@ -72,7 +89,7 @@ public abstract class Outlast<T extends Outlasting> {
      * Delegated callback
      */
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(SAVED_OUTLASTING_TAG, outlastingTag);
+        outState.putString(savedOutlastingTagKey, outlastingTag);
         wasInstanceStateSaved = true;
     }
 
