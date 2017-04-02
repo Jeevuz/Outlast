@@ -2,9 +2,9 @@ package me.jeevuz.outlast.sample;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.subjects.BehaviorSubject;
-import rx.subjects.PublishSubject;
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.PublishSubject;
 import timber.log.Timber;
 
 import static me.jeevuz.outlast.sample.TheApplication.BAD_WORDS;
@@ -20,21 +20,21 @@ public final class MainPresentationModel implements PresentationModel {
     private BehaviorSubject<Boolean> childrenPresence = BehaviorSubject.create();
 
     public Observable<String> inputText() {
-        return inputText.asObservable();
+        return inputText.hide();
     }
 
     public Observable<String> outputText() {
-        return outputText.asObservable();
+        return outputText.hide();
     }
 
     public Observable<Boolean> childrenPresence() {
-        return childrenPresence.asObservable();
+        return childrenPresence.hide();
     }
 
     // Commands from views
     public PublishSubject<String> inputTextChanges = PublishSubject.create();
 
-    public PublishSubject<Void> childrenButtonClicks = PublishSubject.create();
+    public PublishSubject<Object> childrenButtonClicks = PublishSubject.create();
 
 
     @Override
@@ -69,7 +69,7 @@ public final class MainPresentationModel implements PresentationModel {
                                 }
                             }
                             inputText.onNext(input);
-                            outputText.onNext(output);
+                            if (output != null) outputText.onNext(output);
 
                         },
                         Timber::e);

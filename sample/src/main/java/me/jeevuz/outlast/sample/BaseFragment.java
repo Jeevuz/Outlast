@@ -8,12 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
 import me.jeevuz.outlast.predefined.FragmentOutlast;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.subjects.PublishSubject;
-import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 /**
@@ -27,7 +27,7 @@ public abstract class BaseFragment<PM extends PresentationModel> extends Fragmen
     private FragmentOutlast<PM> outlast;
 
     // To unsubscribe when needed
-    private CompositeSubscription subscriptions = new CompositeSubscription();
+    private CompositeDisposable composite = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,14 +86,14 @@ public abstract class BaseFragment<PM extends PresentationModel> extends Fragmen
     public void onPause() {
         super.onPause();
         Timber.d("onPause()");
-        subscriptions.clear();
+        composite.clear();
     }
 
     /**
      * Subscribes to the passed observable with observeOn main thread and adds it to the subscriptions list.
      */
-    protected <T> void bindState(Observable<T> from, Action1<T> onNext, Action1<Throwable> onError) {
-        subscriptions.add(
+    protected <T> void bindState(Observable<T> from, Consumer<T> onNext, Consumer<Throwable> onError) {
+        composite.add(
                 from
                         .doOnNext(t -> Timber.d("state binding called"))
                         .observeOn(AndroidSchedulers.mainThread())
@@ -106,9 +106,9 @@ public abstract class BaseFragment<PM extends PresentationModel> extends Fragmen
 
     /**
      * Subscribes to the passed observable with observeOn main thread and adds it to the subscriptions list.
-     * Not as {@link #bindState(Observable, Action1, Action1)} it will just log on Error.
+     * Not as {@link #bindState(Observable, Consumer, Consumer)} it will just log on Error.
      */
-    protected <T> void bindState(Observable<T> from, Action1<T> onNext) {
+    protected <T> void bindState(Observable<T> from, Consumer<T> onNext) {
         bindState(from, onNext, Timber::e);
     }
 
@@ -116,10 +116,10 @@ public abstract class BaseFragment<PM extends PresentationModel> extends Fragmen
      * Subscribes the passed subject to the
      */
     protected <T> void bindAction(Observable<T> from, PublishSubject<T> to) {
-        subscriptions.add(
+        composite.add(
                 from
                         .doOnNext(t -> Timber.d("bind action called"))
-                        .subscribe(to)
+                        .subscribe(to::onNext)
         );
     }
 

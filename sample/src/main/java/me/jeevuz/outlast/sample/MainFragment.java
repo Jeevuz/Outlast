@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.jakewharton.rxbinding.view.RxView;
-import com.jakewharton.rxbinding.widget.RxTextView;
+import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import me.jeevuz.outlast.R;
 
