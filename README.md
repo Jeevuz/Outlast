@@ -98,7 +98,10 @@ public abstract class BaseFragment<PM extends PresentationModel> extends Fragmen
 }
 ```
 
-That's it. Now you ready to **benefit** from outlasting Presenter (ViewModel, PresentationModel).
+> Outlasting will be **created when** you first call the ```outlast.getOutlasting()``` method.
+
+**That's it.**   
+Now you ready to **benefit** from outlasting Presenter (ViewModel, PresentationModel).
 
 >If you use View or something else different from Fragment or Activity, create your own implementation of Outlast.
 It's easy, you only need to define when you will remove the Outlasting from the store.
